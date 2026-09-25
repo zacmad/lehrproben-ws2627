@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#8FBC9F">
+<title>Lehrproben WS 2026/2027 – Abstimmung</title>
+<style>
+  :root{
+    --bg:#f6f4ef; --ink:#3a3f36; --muted:#7a7f74; --line:#e4e1d8;
+    --green:#8fbc9f; --green-d:#3c5a46; --cream:#fdf6e3;
+    --up:#c8e6c9; --down:#f8c9c9; --open:#ececec;
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent}
+  body{margin:0;font-family:-apple-system,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink);padding-bottom:env(safe-area-inset-bottom)}
+  header{background:linear-gradient(135deg,#a8c6b5,#8fbc9f);color:#fff;padding:18px 16px calc(14px + env(safe-area-inset-top));padding-top:calc(18px + env(safe-area-inset-top));position:sticky;top:0;z-index:10;box-shadow:0 2px 8px rgba(0,0,0,.12)}
+  header h1{margin:0;font-size:1.25rem;letter-spacing:.02em}
+  header p{margin:4px 0 0;font-size:.78rem;opacity:.95}
+  .bar{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;align-items:center}
+  .chip{border:1.5px solid rgba(255,255,255,.7);background:rgba(255,255,255,.18);color:#fff;border-radius:999px;padding:7px 14px;font-size:.82rem;font-weight:600;cursor:pointer;transition:.15s}
+  .chip.on{background:#fff;color:var(--green-d);border-color:#fff}
+  .filters{display:flex;gap:6px;flex-wrap:wrap;padding:12px 12px 0}
+  .f{border:1px solid var(--line);background:#fff;border-radius:999px;padding:6px 12px;font-size:.78rem;cursor:pointer;color:var(--muted);font-weight:600}
+  .f.on{background:var(--green-d);color:#fff;border-color:var(--green-d)}
+  main{padding:10px 12px 24px;max-width:760px;margin:0 auto}
+  .card{background:#fff;border-radius:16px;padding:14px;margin:10px 0;box-shadow:0 1px 4px rgba(60,70,50,.08);border-left:10px solid #ccc}
+  .row1{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:6px}
+  .date{font-size:.75rem;font-weight:700;color:var(--green-d);background:#eef3ee;border-radius:8px;padding:3px 8px}
+  .aj{font-size:.72rem;font-weight:700;border-radius:8px;padding:3px 8px}
+  .aj1{background:#dfeecf;color:#3f6030}.aj2{background:#fdeecb;color:#8a6d1b}.aj3{background:#fbdcd6;color:#94463a}
+  .school{font-weight:700;font-size:.92rem}
+  .loc{color:var(--muted);font-size:.8rem}
+  .topic{margin:8px 0;font-size:1.02rem;font-weight:600;line-height:1.35}
+  .meta{font-size:.8rem;color:var(--muted);line-height:1.5}
+  .votes{display:flex;gap:8px;margin-top:10px}
+  .v{flex:1;border:2px solid var(--line);background:var(--cream);border-radius:12px;padding:10px 0;font-size:1.25rem;cursor:pointer;text-align:center;transition:.12s}
+  .v:active{transform:scale(.95)}
+  .v.sel-up{background:var(--up);border-color:#7cb87e}
+  .v.sel-down{background:var(--down);border-color:#d98b8b}
+  .v.sel-open{background:var(--open);border-color:#bbb}
+  .others{margin-top:8px;font-size:.75rem;color:var(--muted);display:flex;gap:6px;flex-wrap:wrap}
+  .oc{background:#f1efe8;border-radius:8px;padding:2px 8px}
+  .stats{margin:14px 4px 0;font-size:.85rem;color:var(--muted);text-align:center}
+  .actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;padding:6px 12px 10px;position:sticky;bottom:0;background:linear-gradient(to top,var(--bg) 75%,transparent)}
+  .btn{background:var(--green-d);color:#fff;border:none;border-radius:12px;padding:11px 16px;font-size:.82rem;font-weight:700;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,.15)}
+  .btn.sec{background:#fff;color:var(--green-d);border:1.5px solid var(--green-d)}
+  .toast{position:fixed;left:50%;bottom:80px;transform:translateX(-50%);background:#3c5a46;color:#fff;padding:10px 18px;border-radius:12px;font-size:.85rem;opacity:0;pointer-events:none;transition:.25s;max-width:90vw;text-align:center}
+  .toast.show{opacity:.96}
+  .hint{font-size:.72rem;color:var(--muted);text-align:center;padding:0 16px 20px;line-height:1.5}
+  details{margin:8px 12px 0;font-size:.8rem;color:var(--muted)}
+  summary{cursor:pointer;font-weight:600}
+</style>
+</head>
+<body>
+<header>
+  <h1>Lehrproben WS 2026/2027</h1>
+  <p>MPF 1.3 · 19.01.–04.02.2027 · Gruppe: max. 4 Personen · Quelle: Padlet R. Brühe (Stand 05.08.2026)</p>
+  <div class="bar" id="people"></div>
+</header>
+<div class="filters" id="filters"></div>
+<main id="list"></main>
+<div class="stats" id="stats"></div>
+<div class="actions">
+  <button class="btn" onclick="shareSummary()">📋 Zusammenfassung kopieren</button>
+  <button class="btn sec" onclick="copySync()">🔗 Sync-Code kopieren</button>
+  <button class="btn sec" onclick="pasteSync()">📥 Sync-Code einfügen</button>
+</div>
+<details><summary>Info &amp; Regeln</summary>
+  <div style="padding:8px 4px;line-height:1.6">
+    Erstprüfende: Prof. Dr. Brühe oder Prof. Dr. Krell · Zweitprüfende: durch Schule (N.N. = offen).<br>
+    Deine Bewertung wird lokal auf diesem Gerät gespeichert. Zum Austauschen in der Gruppe: <b>Sync-Code kopieren</b> an die anderen senden (z. B. per WhatsApp) – die anderen tippen auf <b>Sync-Code einfügen</b>. Die <b>Zusammenfassung</b> kannst du direkt in die Gruppe kopieren.<br>
+    Padlet: <a href="https://padlet.com/rbruehe/lehrproben-ws-2026-2027-reac0dz5iozcj3ud">padlet.com/rbruehe/lehrproben-ws-2026-2027</a><br>
+    Verbindliche Vorgaben: ILIAS, Kurs MPF 1.3.
+  </div>
+</details>
+<div class="hint">Benutze diese Datei auf jedem Handy gleich – einfach per WhatsApp/Mail/Eigene-Dateien-App öffnen.</div>
+<div class="toast" id="toast"></div>
+<script>
+const DATA = [
+{d:"19.01.2027",dt:"Dienstag",s:"AFW Kliniken der Stadt Köln",o:"Köln-Holweide",l:"Frau Naumer",t:"Mit Kommunikationssituationen umgehen: Personenzentrierte Gesprächsführung nach C. Rogers",a:2,p:"Krell / Andrea Beuter",c:"#DDEBF7"},
+{d:"19.01.2027",dt:"Dienstag",s:"Cellitinnen-Akademie Louise von Marillac",o:"Köln-Nippes",l:"Frau Kleine",t:"Injektionen",a:1,p:"Brühe / N.N.",c:"#DDEBF7"},
+{d:"20.01.2027",dt:"Mittwoch",s:"Schule für Pflegefachberufe Uniklinik Köln",o:"Köln-Braunsfeld",l:"Frau Dr. Scharrer",t:"Leberzirrhose",a:3,p:"Krell / Michael Otta",c:"#FCE4D6"},
+{d:"20.01.2027",dt:"Mittwoch",s:"Centrum f. Aus- u. Weiterbildung, UK Bonn",o:"Bonn",l:"Herr Dr. Nies",t:"Diagnostik und therapeutische Interventionen in der psychiatrischen Versorgung",a:2,p:"Brühe / N.N.",c:"#E4DFEC"},
+{d:"21.01.2027",dt:"Donnerstag",s:"Cellitinnen-Akademie Louise von Marillac-Schule",o:"Köln-Nippes",l:"Frau Kleine",t:"Meine Lebensgeschichte (Teilzeitkurs)",a:1,p:"Krell / N.N.",c:"#DDEBF7"},
+{d:"21.01.2027",dt:"Donnerstag",s:"GFO Schule für Gesundheitsberufe Karl Borromäus",o:"Bonn",l:"Herr Thiel",t:"Sturzprophylaxe",a:2,p:"Brühe / Monika Wiedenau",c:"#FFF2CC"},
+{d:"26.01.2027",dt:"Dienstag",s:"St. Elisabeth-Akademie",o:"Neuss",l:"Frau Huth",t:"TEP, prä-/postoperativ",a:1,p:"Krell / Pia Stocker",c:"#F8CBAD"},
+{d:"26.01.2027",dt:"Dienstag",s:"GFO Schule für Gesundheitsberufe Bergisches Land",o:"Bergisch Gladbach-Bensberg",l:"Herr Schramm",t:"Menschen in internistischen Kontexten pflegerisch unterstützen: Thromboseprophylaxe",a:1,p:"Brühe / Bernd Schramm",c:"#D9E1F2"},
+{d:"27.01.2027",dt:"Mittwoch",s:"Schule für Pflegefachberufe Uniklinik Köln",o:"Köln-Braunsfeld",l:"Frau Dr. Scharrer",t:"Diabetes mellitus Typ 1 bei Jugendlichen",a:3,p:"Brühe / Gudrun Meibrink",c:"#FCE4D6"},
+{d:"27.01.2027",dt:"Mittwoch",s:"Centrum f. Aus- u. Weiterbildung, UK Bonn",o:"Bonn",l:"Herr Dr. Nies",t:"Demenz",a:3,p:"Krell / N.N.",c:"#E4DFEC"},
+{d:"28.01.2027",dt:"Donnerstag",s:"NOBiZ Notfallbildungszentrum Eifel-Rur",o:"Kreuzau-Stockheim",l:"Herr Wilms",t:"Konfliktmanagement an Schnittstellen (Pflege/Rettungsdienst) oder Umgang mit Stress und Resilienz-Aufbau (Coolout etc.)",a:2,p:"Brühe / Ralf Schmitz",c:"#D6DCE4"},
+{d:"02.02.2027",dt:"Dienstag",s:"Wilhelm-Griesinger-Schule für Pflegeberufe",o:"Köln-Merheim",l:"Frau Dickersbach",t:"Einstieg in das Thema Körperpflege",a:1,p:"Brühe / Nathalie Dickersbach",c:"#E2EFDA"},
+{d:"02.02.2027",dt:"Dienstag",s:"GFO Schule für Gesundheitsberufe Karl Borromäus",o:"Bonn",l:"Herr Thiel",t:"Kontrakturenprophylaxe",a:1,p:"Krell / Monika Wiedenau",c:"#FFF2CC"},
+{d:"03.02.2027",dt:"Mittwoch",s:"AFW Kliniken der Stadt Köln",o:"Köln-Riehl",l:"Frau Naumer",t:"Demenzformen und Veränderungen des Sprachvermögens und der sprachlichen Verständigungsfähigkeit in unterschiedlichen Demenzstadien",a:1,p:"Brühe / Kerstin Bukowski",c:"#DDEBF7"},
+{d:"03.02.2027",dt:"Mittwoch",s:"GFO Schule für Gesundheitsberufe Bergisches Land",o:"Bergisch Gladbach-Bensberg",l:"Herr Schramm",t:"Rehabilitationsziele und -pläne im interprofessionellen Team erarbeiten, durchführen und evaluieren: Berufsorganisationen",a:3,p:"Krell / Christina Mertig",c:"#D9E1F2"},
+{d:"04.02.2027",dt:"Donnerstag",s:"Centrum f. Aus- u. Weiterbildung, UK Bonn",o:"Bonn",l:"Herr Dr. Nies",t:"Onkologie",a:2,p:"Brühe / N.N.",c:"#E4DFEC"}
+];
+const PEOPLE = ["Miriam","Michael","Simona","Željko"];
+const SYM = {up:"👍",down:"👎",open:"❓"};
+let st = load();
+let filter = "alle";
+
+function load(){
+  try{ const s = JSON.parse(localStorage.getItem("lp2627")||"{}");
+    return {person:s.person||"", votes:s.votes||{}}; }catch(e){ return {person:"",votes:{}}; }
+}
+function save(){ localStorage.setItem("lp2627", JSON.stringify(st)); }
+
+function merge(imported){
+  for(const k in imported){
+    st.votes[k] = st.votes[k] || {};
+    for(const p in imported[k]){
+      if(!st.votes[k][p] || (p !== st.person)) st.votes[k][p] = imported[k][p];
+    }
+  }
+}
+
+if(location.hash.length>10){
+  try{ merge(JSON.parse(decodeURIComponent(escape(atob(location.hash.slice(1))))));
+    save(); history.replaceState(null,"",location.pathname); toast("Sync-Code aus Link übernommen"); }catch(e){}
+}
+
+function renderPeople(){
+  const el = document.getElementById("people");
+  el.innerHTML = PEOPLE.map(p=>`<button class="chip ${st.person===p?"on":""}" onclick="setPerson('${p}')">${p}</button>`).join("");
+}
+function setPerson(p){ st.person = st.person===p ? "" : p; save(); renderPeople(); render(); }
+
+function renderFilters(){
+  const fs = ["alle","1. Jahr","2. Jahr","3. Jahr"];
+  const el = document.getElementById("filters");
+  el.innerHTML = fs.map(f=>`<button class="f ${filter===f?"on":""}" onclick="setFilter('${f}')">${f}</button>`).join("");
+}
+function setFilter(f){ filter=f; renderFilters(); render(); }
+
+function voteOf(i,p){ return (st.votes[i]&&st.votes[i][p])||""; }
+function setVote(i,v){
+  if(!st.person){ toast("Bitte zuerst oben deinen Namen wählen"); return; }
+  st.votes[i]=st.votes[i]||{};
+  st.votes[i][st.person] = (st.votes[i][st.person]===v)?"":v;
+  save(); render();
+}
+
+function render(){
+  const el = document.getElementById("list");
+  let html = "";
+  DATA.forEach((g,i)=>{
+    const f = filter==="alle" ? true : filter.startsWith(g.a+".");
+    if(!f) return;
+    const others = PEOPLE.filter(p=>p!==st.person && voteOf(i,p))
+      .map(p=>`<span class="oc">${p.split("").slice(0,1)+p.slice(1,-1).slice(-1)}: ${SYM[voteOf(i,p)]}</span>`).join("");
+    const cnt = PEOPLE.filter(p=>voteOf(i,p)).length;
+    html += `<div class="card" style="border-left-color:${g.c}">
+      <div class="row1"><span class="date">${g.dt}, ${g.d}</span><span class="aj aj${g.a}">${g.a}. Ausbildungsjahr</span><span class="oc">${cnt}/4 bewertet</span></div>
+      <div class="school">${g.s}</div><div class="loc">${g.o} · Schulleitung: ${g.l}</div>
+      <div class="topic">${g.t}</div>
+      <div class="meta">Prüfende: ${g.p}</div>
+      <div class="votes">
+        <button class="v ${voteOf(i,st.person)==="up"?"sel-up":""}" onclick="setVote(${i},'up')">👍</button>
+        <button class="v ${voteOf(i,st.person)==="down"?"sel-down":""}" onclick="setVote(${i},'down')">👎</button>
+        <button class="v ${voteOf(i,st.person)==="open"?"sel-open":""}" onclick="setVote(${i},'open')">❓</button>
+      </div>
+      ${others?`<div class="others">${others}</div>`:""}
+    </div>`;
+  });
+  el.innerHTML = html || '<p style="text-align:center;color:var(--muted)">Keine Treffer</p>';
+  const done = DATA.filter((g,i)=>PEOPLE.some(p=>voteOf(i,p))).length;
+  const mine = st.person ? DATA.filter((g,i)=>voteOf(i,st.person)).length : 0;
+  document.getElementById("stats").textContent =
+    `${done}/16 Gruppen bewertet (min. 1 Person) · ${st.person?("deine Bewertung: "+mine+"/16"):"noch keine Person gewählt"}`;
+}
+
+function shareSummary(){
+  let txt = "Lehrproben WS 2026/2027 – Stand der Bewertungen\n\n";
+  DATA.forEach((g,i)=>{
+    const vs = PEOPLE.map(p=>{const v=voteOf(i,p); return v?`${p} ${SYM[v]}`:""}).filter(Boolean);
+    txt += `${i+1}. ${g.dt}, ${g.d} · ${g.s} (${g.a}. AJ)\n   ${g.t}\n   ${vs.length?"→ "+vs.join(", "):"→ noch keine Bewertung"}\n\n`;
+  });
+  copy(txt, "Zusammenfassung kopiert – jetzt in die Gruppe einfügen");
+}
+function copySync(){
+  const b64 = btoa(unescape(encodeURIComponent(JSON.stringify(st.votes))));
+  copy(b64, "Sync-Code kopieren – an die Gruppe senden");
+}
+function pasteSync(){
+  const code = prompt("Sync-Code einer anderen Person einfügen:");
+  if(!code) return;
+  try{ merge(JSON.parse(decodeURIComponent(escape(atob(code.trim()))))); save(); render(); toast("Fremdbewertungen übernommen"); }
+  catch(e){ toast("Code konnte nicht gelesen werden"); }
+}
+function copy(txt,msg){
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(txt).then(()=>toast(msg)).catch(()=>fallback(txt,msg));
+  } else fallback(txt,msg);
+}
+function fallback(txt,msg){
+  const ta=document.createElement("textarea"); ta.value=txt; document.body.appendChild(ta);
+  ta.select(); try{document.execCommand("copy"); toast(msg);}catch(e){ toast("Kopieren nicht möglich – bitte Text manuell markieren"); }
+  document.body.removeChild(ta);
+}
+let tt;
+function toast(m){ const t=document.getElementById("toast"); t.textContent=m; t.classList.add("show"); clearTimeout(tt); tt=setTimeout(()=>t.classList.remove("show"),2600); }
+
+renderPeople(); renderFilters(); render();
+</script>
+</body>
+</html>
