@@ -7,23 +7,39 @@
 <title>Lehrproben WS 2026/2027 – Abstimmung</title>
 <style>
   :root{
-    --bg:#f6f4ef; --ink:#3a3f36; --muted:#7a7f74; --line:#e4e1d8;
-    --green:#8fbc9f; --green-d:#3c5a46; --cream:#fdf6e3;
-    --up:#c8e6c9; --down:#f8c9c9; --open:#ececec;
+    --bg:#f4f2ec; --surface:#fffefa; --ink:#29332d; --muted:#68736c; --line:#dedfd7;
+    --green:#8fbc9f; --green-d:#294d38; --cream:#fdf6e3;
+    --up:#d9efdc; --down:#f8dada; --open:#eceeea; --focus:#f0b95a;
   }
   *{box-sizing:border-box; -webkit-tap-highlight-color:transparent}
-  body{margin:0;font-family:-apple-system,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink);padding-bottom:env(safe-area-inset-bottom)}
-  header{background:linear-gradient(135deg,#a8c6b5,#8fbc9f);color:#fff;padding:18px 16px calc(14px + env(safe-area-inset-top));padding-top:calc(18px + env(safe-area-inset-top));position:sticky;top:0;z-index:10;box-shadow:0 2px 8px rgba(0,0,0,.12)}
-  header h1{margin:0;font-size:1.25rem;letter-spacing:.02em}
-  header p{margin:4px 0 0;font-size:.78rem;opacity:.95}
-  .bar{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;align-items:center}
-  .chip{border:1.5px solid rgba(255,255,255,.7);background:rgba(255,255,255,.18);color:#fff;border-radius:999px;padding:7px 14px;font-size:.82rem;font-weight:600;cursor:pointer;transition:.15s}
-  .chip.on{background:#fff;color:var(--green-d);border-color:#fff}
-  .filters{display:flex;gap:6px;flex-wrap:wrap;padding:12px 12px 0}
+  html,body{max-width:100%;overflow-x:hidden}
+  body{margin:0;font-family:Inter,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink);padding-bottom:env(safe-area-inset-bottom)}
+  button,input{font:inherit}
+  button:focus-visible,input:focus-visible,summary:focus-visible,a:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+  header{background:linear-gradient(135deg,#234431,#5f8d6f);color:#fff;padding:18px 16px 15px;padding-top:calc(18px + env(safe-area-inset-top));position:relative;z-index:10;box-shadow:0 5px 24px rgba(25,55,37,.2)}
+  .head{max-width:760px;margin:0 auto}
+  .eyebrow{font-size:.69rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;opacity:.75}
+  header h1{margin:3px 0 0;font-family:Georgia,"Times New Roman",serif;font-size:clamp(1.55rem,5vw,2.15rem);font-weight:500;letter-spacing:-.025em}
+  header p{margin:5px 0 0;font-size:.78rem;opacity:.85;line-height:1.45}
+  .bar{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;align-items:center}
+  .person{position:relative;display:flex;align-items:center;gap:7px;border:1.5px solid rgba(255,255,255,.65);background:rgba(255,255,255,.12);color:#fff;border-radius:10px;padding:7px 11px;font-size:.82rem;font-weight:650;cursor:pointer;transition:.15s}
+  .person:has(input:checked){background:#fff;color:var(--green-d);border-color:#fff}
+  .person input{width:16px;height:16px;margin:0;accent-color:var(--green-d);cursor:pointer}
+  .sync-status{display:flex;align-items:center;gap:6px;margin-top:9px;font-size:.7rem;opacity:.82}
+  .sync-dot{width:7px;height:7px;border-radius:50%;background:#f0c36a;box-shadow:0 0 0 3px rgba(255,255,255,.12)}
+  .sync-status.online .sync-dot{background:#a9e7b5}.sync-status.error .sync-dot{background:#ffb0a8}
+  .toolbar{max-width:760px;margin:0 auto;padding:14px 12px 2px}
+  .search{width:100%;border:1px solid var(--line);background:var(--surface);border-radius:13px;padding:11px 13px;color:var(--ink);box-shadow:0 1px 3px rgba(35,60,42,.05)}
+  .filters{display:flex;gap:6px;overflow-x:auto;padding:10px 0 5px;scrollbar-width:none}
+  .filters::-webkit-scrollbar{display:none}
   .f{border:1px solid var(--line);background:#fff;border-radius:999px;padding:6px 12px;font-size:.78rem;cursor:pointer;color:var(--muted);font-weight:600}
   .f.on{background:var(--green-d);color:#fff;border-color:var(--green-d)}
-  main{padding:10px 12px 24px;max-width:760px;margin:0 auto}
-  .card{background:#fff;border-radius:16px;padding:14px;margin:10px 0;box-shadow:0 1px 4px rgba(60,70,50,.08);border-left:10px solid #ccc}
+  .overview{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:9px}
+  .metric{background:var(--surface);border:1px solid var(--line);border-radius:13px;padding:10px 8px;text-align:center}
+  .metric strong{display:block;font-family:Georgia,"Times New Roman",serif;font-size:1.35rem;color:var(--green-d)}
+  .metric span{display:block;margin-top:2px;font-size:.66rem;color:var(--muted);line-height:1.2}
+  main{padding:5px 12px 24px;max-width:760px;margin:0 auto}
+  .card{background:var(--surface);border-radius:16px;padding:14px;margin:10px 0;box-shadow:0 2px 9px rgba(35,60,42,.07);border-left:8px solid #ccc}
   .row1{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:6px}
   .date{font-size:.75rem;font-weight:700;color:var(--green-d);background:#eef3ee;border-radius:8px;padding:3px 8px}
   .aj{font-size:.72rem;font-weight:700;border-radius:8px;padding:3px 8px}
@@ -32,8 +48,9 @@
   .loc{color:var(--muted);font-size:.8rem}
   .topic{margin:8px 0;font-size:1.02rem;font-weight:600;line-height:1.35}
   .meta{font-size:.8rem;color:var(--muted);line-height:1.5}
-  .votes{display:flex;gap:8px;margin-top:10px}
-  .v{flex:1;border:2px solid var(--line);background:var(--cream);border-radius:12px;padding:10px 0;font-size:1.25rem;cursor:pointer;text-align:center;transition:.12s}
+  .votes{display:flex;gap:8px;margin-top:12px}
+  .v{flex:1;min-width:0;border:2px solid var(--line);background:var(--cream);border-radius:12px;padding:9px 3px 8px;cursor:pointer;text-align:center;transition:.12s;color:var(--ink)}
+  .v .icon{display:block;font-size:1.18rem;line-height:1.1}.v .label{display:block;margin-top:3px;font-size:.64rem;font-weight:750}
   .v:active{transform:scale(.95)}
   .v.sel-up{background:var(--up);border-color:#7cb87e}
   .v.sel-down{background:var(--down);border-color:#d98b8b}
@@ -41,41 +58,67 @@
   .others{margin-top:8px;font-size:.75rem;color:var(--muted);display:flex;gap:6px;flex-wrap:wrap}
   .oc{background:#f1efe8;border-radius:8px;padding:2px 8px}
   .stats{margin:14px 4px 0;font-size:.85rem;color:var(--muted);text-align:center}
-  .actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;padding:6px 12px 10px;position:sticky;bottom:0;background:linear-gradient(to top,var(--bg) 75%,transparent)}
+  .actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;padding:12px max(12px,env(safe-area-inset-left)) calc(10px + env(safe-area-inset-bottom));position:sticky;bottom:0;background:rgba(244,242,236,.94);backdrop-filter:blur(10px);border-top:1px solid rgba(222,223,215,.8);z-index:8}
   .btn{background:var(--green-d);color:#fff;border:none;border-radius:12px;padding:11px 16px;font-size:.82rem;font-weight:700;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,.15)}
   .btn.sec{background:#fff;color:var(--green-d);border:1.5px solid var(--green-d)}
   .toast{position:fixed;left:50%;bottom:80px;transform:translateX(-50%);background:#3c5a46;color:#fff;padding:10px 18px;border-radius:12px;font-size:.85rem;opacity:0;pointer-events:none;transition:.25s;max-width:90vw;text-align:center}
   .toast.show{opacity:.96}
   .hint{font-size:.72rem;color:var(--muted);text-align:center;padding:0 16px 20px;line-height:1.5}
-  details{margin:8px 12px 0;font-size:.8rem;color:var(--muted)}
+  details{max-width:736px;margin:8px auto 0;font-size:.8rem;color:var(--muted);padding:0 12px}
   summary{cursor:pointer;font-weight:600}
+  .empty{text-align:center;color:var(--muted);background:var(--surface);border:1px dashed var(--line);border-radius:14px;padding:24px 14px}
+  .sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+  @media (max-width:480px){
+    .bar{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.person{justify-content:center}
+    .actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.actions .btn:first-child{grid-column:1/-1}
+    .btn{padding:11px 8px}.v .label{font-size:.6rem}
+  }
+  @media (min-width:700px){
+    header{padding-top:28px;padding-bottom:22px}.bar{margin-top:14px}.toolbar{padding-top:18px}
+    .card{padding:18px}.school{font-size:1rem}.topic{font-size:1.08rem}
+  }
+  @media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
 </style>
 </head>
 <body>
 <header>
-  <h1>Lehrproben WS 2026/2027</h1>
-  <p>MPF 1.3 · 19.01.–04.02.2027 · Gruppe: max. 4 Personen · Quelle: Padlet R. Brühe (Stand 05.08.2026)</p>
-  <div class="bar" id="people"></div>
+  <div class="head">
+    <div class="eyebrow">MPF 1.3 · Gruppenentscheidung</div>
+    <h1>Unsere Lehrprobe</h1>
+    <p>19.01.–04.02.2027 · maximal 4 Personen · Padlet-Stand: 05.08.2026</p>
+    <div class="bar" id="people" aria-label="Eigene Person auswählen"></div>
+    <div class="sync-status" id="syncStatus"><span class="sync-dot"></span><span>Lokale Speicherung</span></div>
+  </div>
 </header>
-<div class="filters" id="filters"></div>
+<section class="toolbar" aria-label="Suche und Filter">
+  <label class="sr" for="search">Lehrproben durchsuchen</label>
+  <input class="search" id="search" type="search" placeholder="Thema, Schule oder Ort suchen …" oninput="setSearch(this.value)">
+  <div class="filters" id="filters"></div>
+  <div class="overview" id="overview"></div>
+</section>
 <main id="list"></main>
 <div class="stats" id="stats"></div>
 <div class="actions">
-  <button class="btn" onclick="shareSummary()">📋 Zusammenfassung kopieren</button>
-  <button class="btn sec" onclick="copySync()">🔗 Sync-Code kopieren</button>
-  <button class="btn sec" onclick="pasteSync()">📥 Sync-Code einfügen</button>
+  <button class="btn" onclick="shareSync()">Abstimmung teilen</button>
+  <button class="btn sec" onclick="shareSummary()">Ergebnis kopieren</button>
+  <button class="btn sec" onclick="pasteSync()">Daten importieren</button>
 </div>
 <details><summary>Info &amp; Regeln</summary>
   <div style="padding:8px 4px;line-height:1.6">
     Erstprüfende: Prof. Dr. Brühe oder Prof. Dr. Krell · Zweitprüfende: durch Schule (N.N. = offen).<br>
-    Deine Bewertung wird lokal auf diesem Gerät gespeichert. Zum Austauschen in der Gruppe: <b>Sync-Code kopieren</b> an die anderen senden (z. B. per WhatsApp) – die anderen tippen auf <b>Sync-Code einfügen</b>. Die <b>Zusammenfassung</b> kannst du direkt in die Gruppe kopieren.<br>
+    Nach der Supabase-Einrichtung wird jede Änderung automatisch online gespeichert und auf allen geöffneten Geräten aktualisiert. Ohne Cloud-Konfiguration bleibt die lokale Speicherung mit Freigabelink aktiv.<br>
     Padlet: <a href="https://padlet.com/rbruehe/lehrproben-ws-2026-2027-reac0dz5iozcj3ud">padlet.com/rbruehe/lehrproben-ws-2026-2027</a><br>
     Verbindliche Vorgaben: ILIAS, Kurs MPF 1.3.
   </div>
 </details>
-<div class="hint">Benutze diese Datei auf jedem Handy gleich – einfach per WhatsApp/Mail/Eigene-Dateien-App öffnen.</div>
+<div class="hint">Tipp: Erst den eigenen Namen wählen, dann jede passende Lehrprobe bewerten.</div>
 <div class="toast" id="toast"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
+// Diese beiden Werte nach der Supabase-Einrichtung ergänzen. Der anon-Schlüssel darf öffentlich sein.
+const SUPABASE_URL = "https://ujigcnqkyvomfshxcvix.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVqaWdjbnFreXZvbWZzaHhjdml4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAzMzEzMzEsImV4cCI6MjEwNTkwNzMzMX0.k1UBsSrLNXJ1HwmwrB4dOA6lDY3JFCucjZn0cHnmGqY";
+const ROOM_ID = "lehrproben-ws2627";
 const DATA = [
 {d:"19.01.2027",dt:"Dienstag",s:"AFW Kliniken der Stadt Köln",o:"Köln-Holweide",l:"Frau Naumer",t:"Mit Kommunikationssituationen umgehen: Personenzentrierte Gesprächsführung nach C. Rogers",a:2,p:"Krell / Andrea Beuter",c:"#DDEBF7"},
 {d:"19.01.2027",dt:"Dienstag",s:"Cellitinnen-Akademie Louise von Marillac",o:"Köln-Nippes",l:"Frau Kleine",t:"Injektionen",a:1,p:"Brühe / N.N.",c:"#DDEBF7"},
@@ -98,12 +141,20 @@ const PEOPLE = ["Miriam","Michael","Simona","Željko"];
 const SYM = {up:"👍",down:"👎",open:"❓"};
 let st = load();
 let filter = "alle";
+let search = "";
+let db = null;
 
 function load(){
   try{ const s = JSON.parse(localStorage.getItem("lp2627")||"{}");
     return {person:s.person||"", votes:s.votes||{}}; }catch(e){ return {person:"",votes:{}}; }
 }
 function save(){ localStorage.setItem("lp2627", JSON.stringify(st)); }
+
+function setSyncStatus(text,type=""){
+  const el=document.getElementById("syncStatus");
+  el.className=`sync-status ${type}`;
+  el.querySelector("span:last-child").textContent=text;
+}
 
 function merge(imported){
   for(const k in imported){
@@ -121,33 +172,120 @@ if(location.hash.length>10){
 
 function renderPeople(){
   const el = document.getElementById("people");
-  el.innerHTML = PEOPLE.map(p=>`<button class="chip ${st.person===p?"on":""}" onclick="setPerson('${p}')">${p}</button>`).join("");
+  el.innerHTML = PEOPLE.map(p=>`<label class="person"><input type="checkbox" ${st.person===p?"checked":""} onchange="setPerson('${p}',this.checked)"><span>${p}</span></label>`).join("");
 }
-function setPerson(p){ st.person = st.person===p ? "" : p; save(); renderPeople(); render(); }
+function setPerson(p,checked){ st.person=checked?p:""; save(); renderPeople(); render(); }
 
 function renderFilters(){
-  const fs = ["alle","1. Jahr","2. Jahr","3. Jahr"];
+  const fs = ["alle","1. Jahr","2. Jahr","3. Jahr","Konsens","offen"];
   const el = document.getElementById("filters");
-  el.innerHTML = fs.map(f=>`<button class="f ${filter===f?"on":""}" onclick="setFilter('${f}')">${f}</button>`).join("");
+  el.innerHTML = fs.map(f=>`<button class="f ${filter===f?"on":""}" aria-pressed="${filter===f}" onclick="setFilter('${f}')">${f}</button>`).join("");
 }
 function setFilter(f){ filter=f; renderFilters(); render(); }
+function setSearch(value){ search=value.trim().toLocaleLowerCase("de"); render(); }
 
 function voteOf(i,p){ return (st.votes[i]&&st.votes[i][p])||""; }
-function setVote(i,v){
+async function setVote(i,v){
   if(!st.person){ toast("Bitte zuerst oben deinen Namen wählen"); return; }
   st.votes[i]=st.votes[i]||{};
-  st.votes[i][st.person] = (st.votes[i][st.person]===v)?"":v;
+  const person=st.person;
+  const next=st.votes[i][person]===v?"":v;
+  if(next) st.votes[i][person]=next;
+  else delete st.votes[i][person];
   save(); render();
+  await syncVote(i,person,next);
+}
+
+async function syncVote(item,person,vote){
+  if(!db) return;
+  setSyncStatus("Wird gespeichert …");
+  const query=db.from("lehrproben_votes");
+  const result=vote
+    ? await query.upsert({room_id:ROOM_ID,item,person,vote,updated_at:new Date().toISOString()})
+    : await query.delete().eq("room_id",ROOM_ID).eq("item",item).eq("person",person);
+  if(result.error){ setSyncStatus("Synchronisierung fehlgeschlagen","error"); toast("Online-Speicherung fehlgeschlagen"); }
+  else setSyncStatus("Online gespeichert","online");
+}
+
+function applyCloudRow(row){
+  st.votes[row.item]=st.votes[row.item]||{};
+  if(row.vote) st.votes[row.item][row.person]=row.vote;
+  else delete st.votes[row.item][row.person];
+}
+
+async function initCloud(){
+  if(!SUPABASE_URL || !SUPABASE_ANON_KEY || !window.supabase){
+    setSyncStatus("Lokale Speicherung");
+    return;
+  }
+  try{
+    setSyncStatus("Verbindung wird hergestellt …");
+    db=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
+    const {data,error}=await db.from("lehrproben_votes").select("item,person,vote").eq("room_id",ROOM_ID);
+    if(error) throw error;
+    if(data.length){
+      st.votes={};
+      data.forEach(applyCloudRow);
+      save(); render();
+    }else{
+      const rows=[];
+      Object.entries(st.votes).forEach(([item,votes])=>Object.entries(votes).forEach(([person,vote])=>rows.push({room_id:ROOM_ID,item:Number(item),person,vote})));
+      if(rows.length){
+        const seeded=await db.from("lehrproben_votes").upsert(rows);
+        if(seeded.error) throw seeded.error;
+      }
+    }
+    setSyncStatus("Online synchronisiert","online");
+    db.channel("lehrproben-live")
+      .on("postgres_changes",{event:"*",schema:"public",table:"lehrproben_votes",filter:`room_id=eq.${ROOM_ID}`},payload=>{
+        if(payload.eventType==="DELETE"){
+          const old=payload.old;
+          if(st.votes[old.item]) delete st.votes[old.item][old.person];
+        }else applyCloudRow(payload.new);
+        save(); render(); setSyncStatus("Online synchronisiert","online");
+      }).subscribe(status=>{
+        if(status==="SUBSCRIBED") setSyncStatus("Online synchronisiert","online");
+      });
+  }catch(error){
+    console.error(error); db=null; setSyncStatus(`Cloud nicht erreichbar: ${error.message||"unbekannter Fehler"}`,"error");
+  }
+}
+
+function score(i){
+  return PEOPLE.reduce((n,p)=>n+({up:2,open:0,down:-2}[voteOf(i,p)]||0),0);
+}
+function isConsensus(i){
+  const votes=PEOPLE.map(p=>voteOf(i,p));
+  return votes.every(Boolean) && votes.every(v=>v==="up");
+}
+function matches(g,i){
+  const text=`${g.s} ${g.o} ${g.l} ${g.t} ${g.p} ${g.d}`.toLocaleLowerCase("de");
+  if(search && !text.includes(search)) return false;
+  if(filter==="alle") return true;
+  if(filter==="Konsens") return isConsensus(i);
+  if(filter==="offen") return PEOPLE.some(p=>!voteOf(i,p));
+  return filter.startsWith(g.a+".");
+}
+
+function renderOverview(){
+  const allVotes=DATA.reduce((n,g,i)=>n+PEOPLE.filter(p=>voteOf(i,p)).length,0);
+  const favourites=DATA.filter((g,i)=>score(i)>0).length;
+  const consensus=DATA.filter((g,i)=>isConsensus(i)).length;
+  document.getElementById("overview").innerHTML=`
+    <div class="metric"><strong>${allVotes}</strong><span>von 64 Stimmen</span></div>
+    <div class="metric"><strong>${favourites}</strong><span>positiv bewertet</span></div>
+    <div class="metric"><strong>${consensus}</strong><span>voller Konsens</span></div>`;
 }
 
 function render(){
   const el = document.getElementById("list");
   let html = "";
-  DATA.forEach((g,i)=>{
-    const f = filter==="alle" ? true : filter.startsWith(g.a+".");
-    if(!f) return;
+  let shown=0;
+  DATA.map((g,i)=>({g,i})).sort((x,y)=>score(y.i)-score(x.i) || x.i-y.i).forEach(({g,i})=>{
+    if(!matches(g,i)) return;
+    shown++;
     const others = PEOPLE.filter(p=>p!==st.person && voteOf(i,p))
-      .map(p=>`<span class="oc">${p.split("").slice(0,1)+p.slice(1,-1).slice(-1)}: ${SYM[voteOf(i,p)]}</span>`).join("");
+      .map(p=>`<span class="oc">${p}: ${SYM[voteOf(i,p)]}</span>`).join("");
     const cnt = PEOPLE.filter(p=>voteOf(i,p)).length;
     html += `<div class="card" style="border-left-color:${g.c}">
       <div class="row1"><span class="date">${g.dt}, ${g.d}</span><span class="aj aj${g.a}">${g.a}. Ausbildungsjahr</span><span class="oc">${cnt}/4 bewertet</span></div>
@@ -155,18 +293,19 @@ function render(){
       <div class="topic">${g.t}</div>
       <div class="meta">Prüfende: ${g.p}</div>
       <div class="votes">
-        <button class="v ${voteOf(i,st.person)==="up"?"sel-up":""}" onclick="setVote(${i},'up')">👍</button>
-        <button class="v ${voteOf(i,st.person)==="down"?"sel-down":""}" onclick="setVote(${i},'down')">👎</button>
-        <button class="v ${voteOf(i,st.person)==="open"?"sel-open":""}" onclick="setVote(${i},'open')">❓</button>
+        <button class="v ${voteOf(i,st.person)==="up"?"sel-up":""}" aria-pressed="${voteOf(i,st.person)==="up"}" aria-label="Passt für mich" onclick="setVote(${i},'up')"><span class="icon">👍</span><span class="label">Passt</span></button>
+        <button class="v ${voteOf(i,st.person)==="open"?"sel-open":""}" aria-pressed="${voteOf(i,st.person)==="open"}" aria-label="Noch offen" onclick="setVote(${i},'open')"><span class="icon">❓</span><span class="label">Offen</span></button>
+        <button class="v ${voteOf(i,st.person)==="down"?"sel-down":""}" aria-pressed="${voteOf(i,st.person)==="down"}" aria-label="Passt nicht für mich" onclick="setVote(${i},'down')"><span class="icon">👎</span><span class="label">Passt nicht</span></button>
       </div>
       ${others?`<div class="others">${others}</div>`:""}
     </div>`;
   });
-  el.innerHTML = html || '<p style="text-align:center;color:var(--muted)">Keine Treffer</p>';
+  el.innerHTML = html || '<p class="empty">Keine passenden Lehrproben gefunden.<br>Ändere den Suchbegriff oder Filter.</p>';
   const done = DATA.filter((g,i)=>PEOPLE.some(p=>voteOf(i,p))).length;
   const mine = st.person ? DATA.filter((g,i)=>voteOf(i,st.person)).length : 0;
   document.getElementById("stats").textContent =
-    `${done}/16 Gruppen bewertet (min. 1 Person) · ${st.person?("deine Bewertung: "+mine+"/16"):"noch keine Person gewählt"}`;
+    `${shown} angezeigt · ${done}/16 mindestens einmal bewertet · ${st.person?("deine Bewertung: "+mine+"/16"):"oben zuerst deinen Namen wählen"}`;
+  renderOverview();
 }
 
 function shareSummary(){
@@ -177,9 +316,16 @@ function shareSummary(){
   });
   copy(txt, "Zusammenfassung kopiert – jetzt in die Gruppe einfügen");
 }
-function copySync(){
-  const b64 = btoa(unescape(encodeURIComponent(JSON.stringify(st.votes))));
-  copy(b64, "Sync-Code kopieren – an die Gruppe senden");
+function encodeVotes(){
+  return btoa(unescape(encodeURIComponent(JSON.stringify(st.votes))));
+}
+function shareSync(){
+  const base=`${location.origin}${location.pathname}${location.search}`;
+  const url=db?base:`${base}#${encodeVotes()}`;
+  const data={title:"Lehrproben WS 2026/2027",text:"Hier ist unser aktueller Abstimmungsstand:",url};
+  if(navigator.share){
+    navigator.share(data).catch(e=>{if(e.name!=="AbortError") copy(url,"Abstimmungslink kopiert");});
+  }else copy(url,"Abstimmungslink kopiert – jetzt an die Gruppe senden");
 }
 function pasteSync(){
   const code = prompt("Sync-Code einer anderen Person einfügen:");
@@ -200,7 +346,7 @@ function fallback(txt,msg){
 let tt;
 function toast(m){ const t=document.getElementById("toast"); t.textContent=m; t.classList.add("show"); clearTimeout(tt); tt=setTimeout(()=>t.classList.remove("show"),2600); }
 
-renderPeople(); renderFilters(); render();
+renderPeople(); renderFilters(); render(); initCloud();
 </script>
 </body>
 </html>
